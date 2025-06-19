@@ -17,8 +17,11 @@ const puppeteer = require('puppeteer');
     args: ['--no-sandbox', '--disable-setuid-sandbox'],
   });
 
-  const page = await browser.newPage();
+  const page = await browser.newPage();  
   await page.goto(url, { waitUntil: 'networkidle2' });
+
+  // Wait for the citation container to appear and be visible
+  await page.waitForSelector(selector, { visible: true });
 
   const element = await page.$(selector);
   if (!element) {
