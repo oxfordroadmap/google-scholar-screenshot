@@ -1,6 +1,8 @@
+const puppeteer = require('puppeteer');
+
 (async () => {
   const authorID = process.env.AUTHOR_ID;
-  const lang = process.env.LANG || 'en';  // fallback to English
+  const lang = process.env.LANG || 'en';
   const selector = '#gsc_rsb_cit';
 
   if (!authorID) {
