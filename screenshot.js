@@ -37,10 +37,15 @@ const puppeteer = require('puppeteer');
     console.log('📸 Saved full-page screenshot to debug_fullpage.png');
 
     // Wait for the citation panel
-    await page.waitForSelector(selector, { timeout: 30000 });
+    await page.waitForFunction(() => {
+      const el = document.querySelector('#gsc_rsb_cit');
+      return el && el.innerText.trim().length > 10;
+    }, { timeout: 30000 });
+
+    await page.waitForSelector(selector, { timeout: 50000 });
     const element = await page.$(selector);
     if (!element) throw new Error(`Selector "${selector}" not found`);
-
+    
     await element.screenshot({ path: output });
     console.log(`✅ Saved element screenshot: ${output}`);
   } catch (err) {
