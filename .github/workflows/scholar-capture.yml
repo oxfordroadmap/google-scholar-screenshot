@@ -32,7 +32,15 @@ jobs:
           AUTHOR_ID: ${{ inputs.author_id }}
           LANG: ${{ inputs.lang }}
         run: node screenshot.js
-
+        
+      - name: Upload debug artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: debug-snapshot
+          path: |
+            debug_output.html
+            debug_fullpage.png
+            
       - name: Upload Screenshot Artifact
         uses: actions/upload-artifact@v4
         with:
