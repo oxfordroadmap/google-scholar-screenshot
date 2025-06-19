@@ -32,6 +32,9 @@ jobs:
       - name: Install Puppeteer
         run: npm install puppeteer
 
+      - name: Install Puppeteer Extra
+        run: npm install puppeteer-extra puppeteer-extra-plugin-stealth
+        
       - name: Run Screenshot Script
         env:
           AUTHOR_ID: ${{ inputs.author_id }}
