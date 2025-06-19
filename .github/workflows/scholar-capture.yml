@@ -2,6 +2,15 @@ name: Google Scholar Element Screenshot
 
 on:
   workflow_dispatch:
+    inputs:
+      author_id:
+        description: 'Google Scholar Author ID'
+        required: true
+        default: 'NAeKcO4AAAAJ'
+      lang:
+        description: 'Language (e.g., en, zh-CN, zh-TW)'
+        required: true
+        default: 'en'
 
 jobs:
   scholar_capture:
