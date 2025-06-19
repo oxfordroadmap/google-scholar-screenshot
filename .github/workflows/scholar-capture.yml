@@ -28,6 +28,9 @@ jobs:
         run: npm install puppeteer
 
       - name: Run Screenshot Script
+        env:
+          AUTHOR_ID: ${{ inputs.author_id }}
+          LANG: ${{ inputs.lang }}
         run: node screenshot.js
 
       - name: Upload Screenshot Artifact
