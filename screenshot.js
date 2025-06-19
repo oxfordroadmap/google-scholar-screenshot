@@ -1,3 +1,4 @@
+const fs = require('fs');
 const puppeteer = require('puppeteer');
 
 (async () => {
@@ -17,29 +18,34 @@ const puppeteer = require('puppeteer');
     args: ['--no-sandbox', '--disable-setuid-sandbox'],
   });
 
-  const page = await browser.newPage();  
-
-  // Spoof the browser more convincingly.
+  const page = await browser.newPage();
   await page.setUserAgent(
-  'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115 Safari/537.36'
-);
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115 Safari/537.36'
+  );
   await page.setViewport({ width: 1280, height: 900 });
 
-  await page.goto(url, { waitUntil: 'networkidle2' });
+  try {
+    await page.goto(url, { waitUntil: 'networkidle2', timeout: 60000 });
 
-  // Debug: 🧪 Save a full-page screenshot to see what the bot sees
-  await page.screenshot({ path: 'debug_fullpage.png', fullPage: true });
-  // Wait for the citation container to appear and be visible
-  await page.waitForSelector(selector); // omit 'visible: true'
+    // Save full HTML for inspection
+    const html = await page.content();
+    fs.writeFileSync('debug_output.html', html);
+    console.log('📝 Saved HTML to debug_output.html');
 
-  const element = await page.$(selector);
-  if (!element) {
-    console.error(`❌ Selector "${selector}" not found at ${url}`);
-    process.exit(1);
+    // Save full-page screenshot
+    await page.screenshot({ path: 'debug_fullpage.png', fullPage: true });
+    console.log('📸 Saved full-page screenshot to debug_fullpage.png');
+
+    // Wait for the citation panel
+    await page.waitForSelector(selector, { timeout: 30000 });
+    const element = await page.$(selector);
+    if (!element) throw new Error(`Selector "${selector}" not found`);
+
+    await element.screenshot({ path: output });
+    console.log(`✅ Saved element screenshot: ${output}`);
+  } catch (err) {
+    console.error(`❌ Error: ${err.message}`);
+  } finally {
+    await browser.close();
   }
-
-  await element.screenshot({ path: output });
-  console.log(`✅ Screenshot saved: ${output}`);
-
-  await browser.close();
 })();
