@@ -18,10 +18,19 @@ const puppeteer = require('puppeteer');
   });
 
   const page = await browser.newPage();  
+
+  // Spoof the browser more convincingly.
+  await page.setUserAgent(
+  'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115 Safari/537.36'
+);
+  await page.setViewport({ width: 1280, height: 900 });
+
   await page.goto(url, { waitUntil: 'networkidle2' });
 
+  // Debug: 🧪 Save a full-page screenshot to see what the bot sees
+  await page.screenshot({ path: 'debug_fullpage.png', fullPage: true });
   // Wait for the citation container to appear and be visible
-  await page.waitForSelector(selector, { visible: true });
+  await page.waitForSelector(selector); // omit 'visible: true'
 
   const element = await page.$(selector);
   if (!element) {
