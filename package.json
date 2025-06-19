@@ -1,16 +1,16 @@
 {
   "name": "google-scholar-screenshot",
   "version": "1.0.0",
-  "description": "A GitHub Action workflow to capture Google Scholar citation metrics via Puppeteer",
+  "description": "Automated screenshots of citation metrics from Google Scholar using Puppeteer Extra with stealth mode",
   "main": "screenshot.js",
   "scripts": {
     "start": "node screenshot.js"
   },
   "dependencies": {
     "puppeteer": "^22.7.0",
-    "puppeteer-extra": "^4.2.1",
+    "puppeteer-extra": "^3.3.4",
     "puppeteer-extra-plugin-stealth": "^2.11.1"
   },
-  "author": "Liao (via Copilot)",
+  "author": "Liao",
   "license": "MIT"
 }
